@@ -57,6 +57,12 @@ public class SpringMediatorTest {
                     return callback.doInTransaction(null);
                 }
         );
+
+        mediator = new SpringMediator(
+                List.of(commandHandlerSpy),
+                List.of(queryHandlerSpy),
+                transactionTemplate
+        );
     }
 
     @Test
