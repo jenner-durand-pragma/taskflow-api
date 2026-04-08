@@ -1,0 +1,16 @@
+package com.example.taskflowapi.shared.exception.base;
+
+import java.util.Optional;
+
+public abstract class ConflictException extends AppException {
+    private final String field;
+
+    protected ConflictException(String message, String errorCode, String field) {
+        super(message, errorCode);
+        this.field = field;
+    }
+
+    public Optional<String> getField() {
+        return Optional.ofNullable(field);
+    }
+}
