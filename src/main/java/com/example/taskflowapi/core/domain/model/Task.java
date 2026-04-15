@@ -16,7 +16,7 @@ public class Task {
     private String title;
     private Long projectId;
     private Long userId;
-    private List<TaskTag> tags = new ArrayList<>();
+    private List<TaskTag> tags;
 
     public void addTag(Tag tag) {
         if (searchTag(tag).isPresent()) {
