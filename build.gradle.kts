@@ -2,6 +2,7 @@ plugins {
     java
     id("org.springframework.boot") version "4.0.5"
     id("io.spring.dependency-management") version "1.1.7"
+    jacoco
 }
 
 group = "com.example"
@@ -69,6 +70,9 @@ dependencies {
 
     //Archunit
     testImplementation("com.tngtech.archunit:archunit-junit5:1.4.1")
+
+    //Only for test
+    testImplementation("com.h2database:h2")
 }
 
 dependencyManagement {
@@ -79,4 +83,15 @@ dependencyManagement {
 
 tasks.withType<Test> {
     useJUnitPlatform()
+    finalizedBy(tasks.jacocoTestReport)
+}
+
+tasks.jacocoTestReport {
+    dependsOn(tasks.test)
+
+    reports {
+        xml.required.set(false)
+        csv.required.set(false)
+        html.required.set(true)
+    }
 }

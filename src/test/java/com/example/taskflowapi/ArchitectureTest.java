@@ -35,7 +35,7 @@ public class ArchitectureTest {
             .should().onlyDependOnClassesThat()
             .resideInAnyPackage(
                     "java..", // Permitir clases del JDK estándar
-                    "..domain..",              // Permitir clases dentro del propio dominio (ej. Order depende de OrderItem)
+                    "..domain..",              // Permitir clases dentro del propio dominio
                     "lombok.."                 // Permitir anotaciones de Lombok
             )
             .allowEmptyShould(true)
