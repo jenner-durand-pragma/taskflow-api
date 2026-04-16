@@ -11,17 +11,32 @@ services:
     image: 'apache/kafka:latest' # <-- Esta es la clave
     ports:
       - '9092:9092'
+    volumes:
+      - ./jaas.conf:/etc/kafka/jaas.conf
     environment:
+    # Controller and Nodes
     - KAFKA_NODE_ID=1
     - KAFKA_PROCESS_ROLES=broker,controller
     - KAFKA_CONTROLLER_QUORUM_VOTERS=1@localhost:9093
     - KAFKA_CONTROLLER_LISTENER_NAMES=CONTROLLER
-    # AQUI ESTA LA MAGIA:
-    # Puerta EXTERNAL (9092) para tu PC/ngrok. Puerta INTERNAL (29092) para Docker/Kafdrop
+
+    # Network
     - KAFKA_LISTENERS=EXTERNAL://:9092,INTERNAL://:29092,CONTROLLER://:9093
-    - KAFKA_ADVERTISED_LISTENERS=EXTERNAL://localhost:9092,INTERNAL://kafka:29092
-    - KAFKA_LISTENER_SECURITY_PROTOCOL_MAP=EXTERNAL:PLAINTEXT,INTERNAL:PLAINTEXT,CONTROLLER:PLAINTEXT
+    - KAFKA_ADVERTISED_LISTENERS=EXTERNAL://ghxwn-2800-200-d0e0-5e9-d1cd-3354-92cc-5350.run.pinggy-free.link:40235,INTERNAL://kafka:29092
+    #- KAFKA_ADVERTISED_LISTENERS=EXTERNAL://localhost:9092,INTERNAL://kafka:2909
+
+    # Security
+    - KAFKA_LISTENER_SECURITY_PROTOCOL_MAP=EXTERNAL:SASL_PLAINTEXT,INTERNAL:PLAINTEXT,CONTROLLER:PLAINTEXT
     - KAFKA_INTER_BROKER_LISTENER_NAME=INTERNAL
+
+    # Config
+    - KAFKA_SASL_ENABLED_MECHANISMS=PLAIN
+    - KAFKA_OPTS=-Djava.security.auth.login.config=/etc/kafka/jaas.conf
+
+    # Coordinator
+    - KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR=1
+    - KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR=1
+    - KAFKA_TRANSACTION_STATE_LOG_MIN_ISR=1
 
   kafdrop:
     image: 'obsidiandynamics/kafdrop:latest'
