@@ -1,6 +1,7 @@
 package com.example.taskflowapi.shared.mediator;
 
-import com.example.taskflowapi.shared.mediator.impl.SpringMediator;
+import com.example.taskflowapi.application.mediator.*;
+import com.example.taskflowapi.infrastructure.mediator.SpringMediator;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

@@ -1,5 +1,7 @@
 package com.example.taskflowapi.core.domain.model;
 
+import com.example.taskflowapi.domain.model.Tag;
+import com.example.taskflowapi.domain.model.Task;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

@@ -1,8 +1,10 @@
 package com.example.taskflowapi.core.application.getprojects;
 
-import com.example.taskflowapi.core.domain.gateway.ProjectRepository;
-import com.example.taskflowapi.core.domain.model.Project;
-import com.example.taskflowapi.shared.common.dto.pagination.PageRequest;
+import com.example.taskflowapi.application.usecase.getprojects.GetProjectsQuery;
+import com.example.taskflowapi.application.usecase.getprojects.GetProjectsQueryHandler;
+import com.example.taskflowapi.domain.gateway.ProjectRepository;
+import com.example.taskflowapi.domain.model.Project;
+import com.example.taskflowapi.application.dto.pagination.PageRequest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

@@ -1,10 +1,10 @@
 package com.example.taskflowapi.core.infrastructure.persistence.adapter;
 
-import com.example.taskflowapi.core.domain.model.Project;
-import com.example.taskflowapi.core.domain.model.Tag;
-import com.example.taskflowapi.core.infrastructure.persistence.entity.ProjectEntity;
-import com.example.taskflowapi.core.infrastructure.persistence.mapper.ProjectEntityMapper;
-import com.example.taskflowapi.core.infrastructure.persistence.repository.ProjectEntityRepository;
+import com.example.taskflowapi.domain.model.Project;
+import com.example.taskflowapi.infrastructure.persistence.adapter.ProjectRepositoryAdapter;
+import com.example.taskflowapi.infrastructure.persistence.entity.ProjectEntity;
+import com.example.taskflowapi.infrastructure.persistence.mapper.ProjectEntityMapper;
+import com.example.taskflowapi.infrastructure.persistence.repository.ProjectEntityRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -15,7 +15,6 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.domain.PageRequest;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;

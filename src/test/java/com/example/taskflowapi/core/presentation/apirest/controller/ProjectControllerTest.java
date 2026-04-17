@@ -1,15 +1,15 @@
 package com.example.taskflowapi.core.presentation.apirest.controller;
 
-import com.example.taskflowapi.core.application.createproject.CreateProjectCommand;
-import com.example.taskflowapi.core.application.getprojects.GetProjectsQuery;
-import com.example.taskflowapi.core.domain.model.Project;
-import com.example.taskflowapi.core.presentation.apirest.dto.createproject.CreateProjectRequest;
-import com.example.taskflowapi.core.presentation.apirest.dto.createproject.CreateProjectResponse;
-import com.example.taskflowapi.core.presentation.apirest.dto.getprojects.GetProjectsRequest;
-import com.example.taskflowapi.core.presentation.apirest.dto.getprojects.GetProjectsResponse;
-import com.example.taskflowapi.core.presentation.apirest.mapper.ProjectRequestMapper;
-import com.example.taskflowapi.shared.common.dto.pagination.PaginatedResult;
-import com.example.taskflowapi.shared.mediator.Mediator;
+import com.example.taskflowapi.application.usecase.createproject.CreateProjectCommand;
+import com.example.taskflowapi.domain.model.Project;
+import com.example.taskflowapi.presentation.apirest.controller.ProjectController;
+import com.example.taskflowapi.presentation.apirest.dto.createproject.CreateProjectRequest;
+import com.example.taskflowapi.presentation.apirest.dto.createproject.CreateProjectResponse;
+import com.example.taskflowapi.presentation.apirest.dto.getprojects.GetProjectsRequest;
+import com.example.taskflowapi.presentation.apirest.dto.getprojects.GetProjectsResponse;
+import com.example.taskflowapi.presentation.apirest.mapper.ProjectRequestMapper;
+import com.example.taskflowapi.application.dto.pagination.PaginatedResult;
+import com.example.taskflowapi.application.mediator.Mediator;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;

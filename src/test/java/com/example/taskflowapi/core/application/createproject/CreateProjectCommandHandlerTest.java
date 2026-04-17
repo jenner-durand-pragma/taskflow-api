@@ -1,7 +1,9 @@
 package com.example.taskflowapi.core.application.createproject;
 
-import com.example.taskflowapi.core.domain.gateway.ProjectRepository;
-import com.example.taskflowapi.core.domain.model.Project;
+import com.example.taskflowapi.application.usecase.createproject.CreateProjectCommand;
+import com.example.taskflowapi.application.usecase.createproject.CreateProjectCommandHandler;
+import com.example.taskflowapi.domain.gateway.ProjectRepository;
+import com.example.taskflowapi.domain.model.Project;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

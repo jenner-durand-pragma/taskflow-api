@@ -1,10 +1,11 @@
 package com.example.taskflowapi.shared.exception.handler;
 
-import com.example.taskflowapi.shared.exception.base.BusinessRuleException;
-import com.example.taskflowapi.shared.exception.base.ConflictException;
-import com.example.taskflowapi.shared.exception.base.NotFoundException;
-import com.example.taskflowapi.shared.exception.dto.ApiError;
-import com.example.taskflowapi.shared.exception.dto.ApiErrorResponse;
+import com.example.taskflowapi.presentation.exception.GlobalExceptionHandler;
+import com.example.taskflowapi.domain.exception.BusinessRuleException;
+import com.example.taskflowapi.domain.exception.ConflictException;
+import com.example.taskflowapi.domain.exception.NotFoundException;
+import com.example.taskflowapi.presentation.apirest.dto.common.ApiError;
+import com.example.taskflowapi.presentation.apirest.dto.common.ApiErrorResponse;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;

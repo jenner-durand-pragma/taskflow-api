@@ -26,8 +26,8 @@ public class ArchitectureTest {
             // Define access layers rules
             .whereLayer("Presentation").mayNotBeAccessedByAnyLayer()
             .whereLayer("Infrastructure").mayNotBeAccessedByAnyLayer()
-            .whereLayer("Application").mayOnlyBeAccessedByLayers("Presentation", "Infrastructure", "Shared")
-            .whereLayer("Domain").mayOnlyBeAccessedByLayers("Application", "Infrastructure", "Presentation", "Shared");
+            .whereLayer("Application").mayOnlyBeAccessedByLayers("Presentation", "Infrastructure")
+            .whereLayer("Domain").mayOnlyBeAccessedByLayers("Application", "Infrastructure", "Presentation");
 
     @ArchTest
     static final ArchRule domainMustBePure = classes()
