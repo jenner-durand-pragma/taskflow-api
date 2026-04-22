@@ -1,4 +1,4 @@
-package com.example.taskflowapi.shared.exception.handler;
+package com.example.taskflowapi.presentation.exception.handler;
 
 import com.example.taskflowapi.presentation.exception.GlobalExceptionHandler;
 import com.example.taskflowapi.domain.exception.BusinessRuleException;
