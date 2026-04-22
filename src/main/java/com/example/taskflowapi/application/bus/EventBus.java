@@ -1,5 +1,6 @@
 package com.example.taskflowapi.application.bus;
 
 public interface EventBus {
-    void publish(Object event);
+    void send(Record event, String key, String type);
+    void send(Record event, String key);
 }
