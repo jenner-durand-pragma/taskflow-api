@@ -1,8 +1,7 @@
-package com.example.taskflowapi.core.presentation.apirest.controller;
+package com.example.taskflowapi.presentation.apirest.controller;
 
 import com.example.taskflowapi.application.usecase.createproject.CreateProjectCommand;
 import com.example.taskflowapi.domain.model.Project;
-import com.example.taskflowapi.presentation.apirest.controller.ProjectController;
 import com.example.taskflowapi.presentation.apirest.dto.createproject.CreateProjectRequest;
 import com.example.taskflowapi.presentation.apirest.dto.createproject.CreateProjectResponse;
 import com.example.taskflowapi.presentation.apirest.dto.getprojects.GetProjectsRequest;
