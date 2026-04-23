@@ -20,11 +20,11 @@ public class ProjectEventConsumer {
         var dataNode = mapper.valueToTree(event.data());
 
         handlers.stream()
-                .filter(handler -> handler.supports(event.eventType()))
+                .filter(handler -> handler.supports(event.type()))
                 .findFirst()
                 .ifPresentOrElse(
                         handler -> handler.handle(mapper.treeToValue(dataNode, handler.getEventClass())),
-                        () -> System.out.println("No handler found for " + event.eventType())
+                        () -> System.out.println("No handler found for " + event.type())
                 );
     }
 }

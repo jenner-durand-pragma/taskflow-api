@@ -1,6 +1,6 @@
 package com.example.taskflowapi.infrastructure.messaging.topic.project.config;
 
-import com.example.taskflowapi.infrastructure.messaging.contract.ModuleExternalizationConfigurer;
+import com.example.taskflowapi.infrastructure.messaging.contract.TopicRouter;
 import org.apache.kafka.clients.admin.NewTopic;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -15,7 +15,7 @@ public class ProjectMessagingConfig {
     }
 
     @Bean
-    public ModuleExternalizationConfigurer projectConfigurer(@Value("${app.kafka.topics.project}") String projectTopic) {
-        return new ProjectExternalizationConfigurer(projectTopic);
+    public TopicRouter projectTopicConfigurer(@Value("${app.kafka.topics.project}") String projectTopic) {
+        return new ProjectTopicRouter(projectTopic);
     }
 }
