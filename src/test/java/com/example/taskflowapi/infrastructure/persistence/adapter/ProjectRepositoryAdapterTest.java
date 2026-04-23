@@ -1,16 +1,15 @@
 package com.example.taskflowapi.infrastructure.persistence.adapter;
 
 import com.example.taskflowapi.domain.model.Project;
-import com.example.taskflowapi.infrastructure.persistence.adapter.ProjectRepositoryAdapter;
 import com.example.taskflowapi.infrastructure.persistence.entity.ProjectEntity;
 import com.example.taskflowapi.infrastructure.persistence.mapper.ProjectEntityMapper;
 import com.example.taskflowapi.infrastructure.persistence.repository.ProjectEntityRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mapstruct.factory.Mappers;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.domain.PageRequest;
@@ -23,13 +22,12 @@ import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 public class ProjectRepositoryAdapterTest {
+
     @Mock
     private ProjectEntityRepository repository;
 
-    @Mock
-    private ProjectEntityMapper mapper;
+    private final ProjectEntityMapper mapper = Mappers.getMapper(ProjectEntityMapper.class);
 
-    @InjectMocks
     private ProjectRepositoryAdapter adapter;
 
     @Captor
@@ -40,6 +38,8 @@ public class ProjectRepositoryAdapterTest {
 
     @BeforeEach
     void setUp() {
+        adapter = new ProjectRepositoryAdapter(repository, mapper);
+
         model = Project.builder()
                 .id(1L)
                 .name("Proyecto de prueba")
@@ -55,9 +55,7 @@ public class ProjectRepositoryAdapterTest {
 
     @Test
     void createShouldSetDatesAndSaveEntity() {
-        when(mapper.toEntity(model)).thenReturn(entity);
-        when(repository.save(entity)).thenReturn(entity);
-        when(mapper.toModel(entity)).thenReturn(model);
+        when(repository.save(any(ProjectEntity.class))).thenReturn(entity);
 
         var result = adapter.create(model);
 
@@ -66,18 +64,14 @@ public class ProjectRepositoryAdapterTest {
 
         var resultCaptor = entityCaptor.getValue();
 
-        assertNotNull(resultCaptor.getCreatedAt(), "CreatedAt no debería ser null");
-        assertNotNull(resultCaptor.getUpdatedAt(), "UpdatedAt no debería ser null");
-
-        verify(mapper).toEntity(model);
-        verify(mapper).toModel(entity);
+        assertNotNull(resultCaptor.getCreatedAt());
+        assertNotNull(resultCaptor.getUpdatedAt());
+        assertEquals(model.getName(), resultCaptor.getName());
     }
 
     @Test
     void updateShouldSetUpdatedAtAndSaveEntity() {
-        when(mapper.toEntity(model)).thenReturn(entity);
-        when(repository.save(entity)).thenReturn(entity);
-        when(mapper.toModel(entity)).thenReturn(model);
+        when(repository.save(any(ProjectEntity.class))).thenReturn(entity);
 
         var result = adapter.update(model);
 
@@ -85,10 +79,9 @@ public class ProjectRepositoryAdapterTest {
         verify(repository).save(entityCaptor.capture());
 
         var resultCaptor = entityCaptor.getValue();
-        assertNotNull(resultCaptor.getUpdatedAt(), "UpdatedAt no debería ser null");
 
-        verify(mapper).toEntity(model);
-        verify(mapper).toModel(entity);
+        assertNotNull(resultCaptor.getUpdatedAt());
+        assertEquals(model.getName(), resultCaptor.getName());
     }
 
     @Test
@@ -100,14 +93,13 @@ public class ProjectRepositoryAdapterTest {
         var entities = List.of(entity);
 
         when(repository.findAllBy(pageable)).thenReturn(entities);
-        when(mapper.toModel(entity)).thenReturn(model);
 
         var result = adapter.searchPaginated(search, page, size);
 
-        assertEquals(1, result.size(), "La lista debe contener 1 proyecto");
+        assertEquals(1, result.size());
+        assertEquals(entity.getId(), result.get(0).getId());
         verify(repository).findAllBy(pageable);
         verify(repository, never()).findByNameOrDescriptionContainingIgnoreCase(search, search, pageable);
-        verify(mapper).toModel(entity);
     }
 
     @Test
@@ -119,14 +111,13 @@ public class ProjectRepositoryAdapterTest {
         var entities = List.of(entity);
 
         when(repository.findByNameOrDescriptionContainingIgnoreCase(search, search, pageable)).thenReturn(entities);
-        when(mapper.toModel(entity)).thenReturn(model);
 
         var result = adapter.searchPaginated(search, page, size);
 
-        assertEquals(1, result.size(), "La lista debe contener 1 proyecto");
+        assertEquals(1, result.size());
+        assertEquals(entity.getId(), result.get(0).getId());
         verify(repository).findByNameOrDescriptionContainingIgnoreCase(search, search, pageable);
         verify(repository, never()).findAllBy(pageable);
-        verify(mapper).toModel(entity);
     }
 
     @Test

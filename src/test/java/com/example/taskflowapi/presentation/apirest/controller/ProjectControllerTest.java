@@ -3,15 +3,15 @@ package com.example.taskflowapi.presentation.apirest.controller;
 import com.example.taskflowapi.application.usecase.createproject.CreateProjectCommand;
 import com.example.taskflowapi.domain.model.Project;
 import com.example.taskflowapi.presentation.apirest.dto.createproject.CreateProjectRequest;
-import com.example.taskflowapi.presentation.apirest.dto.createproject.CreateProjectResponse;
 import com.example.taskflowapi.presentation.apirest.dto.getprojects.GetProjectsRequest;
 import com.example.taskflowapi.presentation.apirest.dto.getprojects.GetProjectsResponse;
 import com.example.taskflowapi.presentation.apirest.mapper.ProjectRequestMapper;
 import com.example.taskflowapi.application.dto.pagination.PaginatedResult;
 import com.example.taskflowapi.application.mediator.Mediator;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
+import org.mapstruct.factory.Mappers;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
@@ -23,14 +23,18 @@ import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 public class ProjectControllerTest {
+
     @Mock
     private Mediator mediator;
 
-    @Mock
-    private ProjectRequestMapper mapper;
+    private final ProjectRequestMapper mapper = Mappers.getMapper(ProjectRequestMapper.class);
 
-    @InjectMocks
     private ProjectController controller;
+
+    @BeforeEach
+    void setUp() {
+        controller = new ProjectController(mediator, mapper);
+    }
 
     @Test
     void createProjectShouldReturnOkAndApiResponse() {
@@ -40,20 +44,14 @@ public class ProjectControllerTest {
                 .description("Ejemplo")
                 .build();
         var request = new CreateProjectRequest(project.getName(), project.getDescription());
-        var command = new CreateProjectCommand(request.name(), request.description());
-        var response = new CreateProjectResponse(project.getId(), project.getName(), project.getDescription());
 
-        when(mapper.toCommand(request)).thenReturn(command);
-        when(mediator.send(command)).thenReturn(project);
-        when(mapper.toResponse(project)).thenReturn(response);
+        when(mediator.send(any(CreateProjectCommand.class))).thenReturn(project);
 
         var result = controller.createProject(request);
 
         assertNotNull(result);
 
-        verify(mapper).toCommand(request);
-        verify(mediator).send(command);
-        verify(mapper).toResponse(project);
+        verify(mediator).send(any(CreateProjectCommand.class));
     }
 
     @Test
@@ -66,24 +64,26 @@ public class ProjectControllerTest {
                 .name("Proyecto")
                 .description("Ejemplo")
                 .build();
-        var projectResponse = new GetProjectsResponse(project.getId(), project.getName(), project.getDescription());
+
         var request = new GetProjectsRequest("Proyecto", page, size);
         var query = request.toQuery();
         var list = List.of(project);
         var response = PaginatedResult.of(list, totalElements, page, size);
 
         when(mediator.send(query)).thenReturn(response);
-        when(mapper.toResponseList(project)).thenReturn(projectResponse);
 
         var result = controller.getProjects(request);
-        assertNotNull(result);
 
+        assertNotNull(result);
         var bodyResult = result.getBody();
         assertNotNull(bodyResult);
 
         assertEquals(1, bodyResult.getData().size(), "El cuerpo de la respuesta debe tener 1 elemento");
 
+        var firstItem = (GetProjectsResponse) bodyResult.getData().get(0);
+        assertEquals(project.getId(), firstItem.id());
+        assertEquals(project.getName(), firstItem.name());
+
         verify(mediator).send(query);
-        verify(mapper).toResponseList(project);
     }
 }
