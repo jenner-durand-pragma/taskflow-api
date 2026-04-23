@@ -1,4 +1,4 @@
-package com.example.taskflowapi.infrastructure.messaging.topic.project.config;
+package com.example.taskflowapi.infrastructure.messaging.topic.project.router;
 
 import com.example.taskflowapi.application.event.integration.project.ProjectEvent;
 import com.example.taskflowapi.infrastructure.messaging.contract.TopicRouter;

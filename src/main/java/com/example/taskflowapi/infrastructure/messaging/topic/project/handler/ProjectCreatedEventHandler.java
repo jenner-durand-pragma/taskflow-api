@@ -13,8 +13,7 @@ public class ProjectCreatedEventHandler implements ProjectEventHandler<ProjectCr
     }
 
     @Override
-    public void handle(Object eventData) {
-        var event = (ProjectCreatedIntegrationEvent) eventData;
+    public void handle(ProjectCreatedIntegrationEvent event) {
         log.info("Se recibio un proyecto con ID: {} con nombre: {} y descripción {}", event.id(), event.name(), event.description());
     }
 

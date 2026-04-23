@@ -1,6 +1,7 @@
 package com.example.taskflowapi.infrastructure.messaging.topic.project.config;
 
 import com.example.taskflowapi.infrastructure.messaging.contract.TopicRouter;
+import com.example.taskflowapi.infrastructure.messaging.topic.project.router.ProjectTopicRouter;
 import org.apache.kafka.clients.admin.NewTopic;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
