@@ -1,4 +1,4 @@
-package com.example.taskflowapi.domain.exception;
+package com.example.taskflowapi.domain.exception.base;
 
 import lombok.Getter;
 

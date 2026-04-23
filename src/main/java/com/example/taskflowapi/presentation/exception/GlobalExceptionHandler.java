@@ -2,9 +2,9 @@ package com.example.taskflowapi.presentation.exception;
 
 import com.example.taskflowapi.presentation.apirest.dto.common.ApiError;
 import com.example.taskflowapi.presentation.apirest.dto.common.ApiErrorResponse;
-import com.example.taskflowapi.domain.exception.BusinessRuleException;
-import com.example.taskflowapi.domain.exception.ConflictException;
-import com.example.taskflowapi.domain.exception.NotFoundException;
+import com.example.taskflowapi.domain.exception.base.BusinessRuleException;
+import com.example.taskflowapi.domain.exception.base.ConflictException;
+import com.example.taskflowapi.domain.exception.base.NotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.*;
 import org.springframework.validation.FieldError;

@@ -1,11 +1,11 @@
-package com.example.taskflowapi.domain.exception;
+package com.example.taskflowapi.domain.exception.base;
 
 import java.util.Optional;
 
-public abstract class ConflictException extends AppException {
+public abstract class BusinessRuleException extends AppException {
     private final String field;
 
-    protected ConflictException(String message, String errorCode, String field) {
+    protected BusinessRuleException(String message, String errorCode, String field) {
         super(message, errorCode);
         this.field = field;
     }

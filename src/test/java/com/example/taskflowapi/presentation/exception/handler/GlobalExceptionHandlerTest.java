@@ -1,9 +1,9 @@
 package com.example.taskflowapi.presentation.exception.handler;
 
 import com.example.taskflowapi.presentation.exception.GlobalExceptionHandler;
-import com.example.taskflowapi.domain.exception.BusinessRuleException;
-import com.example.taskflowapi.domain.exception.ConflictException;
-import com.example.taskflowapi.domain.exception.NotFoundException;
+import com.example.taskflowapi.domain.exception.base.BusinessRuleException;
+import com.example.taskflowapi.domain.exception.base.ConflictException;
+import com.example.taskflowapi.domain.exception.base.NotFoundException;
 import com.example.taskflowapi.presentation.apirest.dto.common.ApiError;
 import com.example.taskflowapi.presentation.apirest.dto.common.ApiErrorResponse;
 import org.junit.jupiter.api.BeforeEach;
