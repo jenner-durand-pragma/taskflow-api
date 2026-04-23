@@ -1,4 +1,4 @@
-package com.example.taskflowapi.core.application.createproject;
+package com.example.taskflowapi.application.createproject;
 
 import com.example.taskflowapi.application.usecase.createproject.CreateProjectCommand;
 import com.example.taskflowapi.application.usecase.createproject.CreateProjectCommandHandler;

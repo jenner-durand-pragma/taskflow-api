@@ -1,4 +1,4 @@
-package com.example.taskflowapi.core.application.getprojects;
+package com.example.taskflowapi.application.getprojects;
 
 import com.example.taskflowapi.application.usecase.getprojects.GetProjectsQuery;
 import com.example.taskflowapi.application.usecase.getprojects.GetProjectsQueryHandler;
