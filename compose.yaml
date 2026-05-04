@@ -1,48 +1,48 @@
 services:
   postgres:
-    image: 'postgres:18'
+    image: 'postgres:${POSTGRES_VERSION}'
     environment:
-      - 'POSTGRES_DB=taskflow_db'
-      - 'POSTGRES_PASSWORD=taskflow_password'
-      - 'POSTGRES_USER=taskflow_user'
+      - 'POSTGRES_DB=${POSTGRES_DB}'
+      - 'POSTGRES_PASSWORD=${POSTGRES_PASSWORD}'
+      - 'POSTGRES_USER=${POSTGRES_USER}'
     ports:
-      - '5432:5432'
+      - '${POSTGRES_HOST_PORT}:5432'
+
   kafka:
-    image: 'apache/kafka:latest' # <-- Esta es la clave
+    image: 'apache/kafka:${KAFKA_VERSION}' # <-- Esta es la clave
     ports:
-      - '9092:9092'
+      - '${KAFKA_EXTERNAL_PORT}:9092'
     volumes:
       - ./jaas.conf:/etc/kafka/jaas.conf
     environment:
-    # Controller and Nodes
-    - KAFKA_NODE_ID=1
-    - KAFKA_PROCESS_ROLES=broker,controller
-    - KAFKA_CONTROLLER_QUORUM_VOTERS=1@localhost:9093
-    - KAFKA_CONTROLLER_LISTENER_NAMES=CONTROLLER
+      # Controller and Nodes
+      - KAFKA_NODE_ID=1
+      - KAFKA_PROCESS_ROLES=broker,controller
+      - KAFKA_CONTROLLER_QUORUM_VOTERS=1@localhost:9093
+      - KAFKA_CONTROLLER_LISTENER_NAMES=CONTROLLER
 
-    # Network
-    - KAFKA_LISTENERS=EXTERNAL://:9092,INTERNAL://:29092,CONTROLLER://:9093
-    #- KAFKA_ADVERTISED_LISTENERS=EXTERNAL://ghxwn-2800-200-d0e0-5e9-d1cd-3354-92cc-5350.run.pinggy-free.link:40235,INTERNAL://kafka:29092
-    - KAFKA_ADVERTISED_LISTENERS=EXTERNAL://localhost:9092,INTERNAL://kafka:2909
+      # Network
+      - KAFKA_LISTENERS=EXTERNAL://:9092,INTERNAL://:29092,CONTROLLER://:9093
+      - KAFKA_ADVERTISED_LISTENERS=${KAFKA_ADVERTISED_EXTERNAL},INTERNAL://kafka:29092
 
-    # Security
-    - KAFKA_LISTENER_SECURITY_PROTOCOL_MAP=EXTERNAL:SASL_PLAINTEXT,INTERNAL:PLAINTEXT,CONTROLLER:PLAINTEXT
-    - KAFKA_INTER_BROKER_LISTENER_NAME=INTERNAL
+      # Security
+      - KAFKA_LISTENER_SECURITY_PROTOCOL_MAP=EXTERNAL:SASL_PLAINTEXT,INTERNAL:PLAINTEXT,CONTROLLER:PLAINTEXT
+      - KAFKA_INTER_BROKER_LISTENER_NAME=INTERNAL
 
-    # Config
-    - KAFKA_SASL_ENABLED_MECHANISMS=PLAIN
-    - KAFKA_OPTS=-Djava.security.auth.login.config=/etc/kafka/jaas.conf
+      # Config
+      - KAFKA_SASL_ENABLED_MECHANISMS=PLAIN
+      - KAFKA_OPTS=-Djava.security.auth.login.config=/etc/kafka/jaas.conf
 
-    # Coordinator
-    - KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR=1
-    - KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR=1
-    - KAFKA_TRANSACTION_STATE_LOG_MIN_ISR=1
+      # Coordinator
+      - KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR=1
+      - KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR=1
+      - KAFKA_TRANSACTION_STATE_LOG_MIN_ISR=1
 
   kafdrop:
-    image: 'obsidiandynamics/kafdrop:latest'
+    image: 'obsidiandynamics/kafdrop:${KAFDROP_VERSION}'
     depends_on:
       - kafka
     ports:
-      - '9000:9000'
+      - '${KAFDROP_HOST_PORT}:9000'
     environment:
       - KAFKA_BROKERCONNECT=kafka:29092
