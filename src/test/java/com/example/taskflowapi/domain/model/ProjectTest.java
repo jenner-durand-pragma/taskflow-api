@@ -13,8 +13,9 @@ public class ProjectTest {
     @BeforeEach
     void setUp() {
         project = Project.builder()
-                .id(1L)
+                .code("PRJ-1234")
                 .name("Project test")
+                .description("Example")
                 .build();
     }
 
@@ -24,12 +25,6 @@ public class ProjectTest {
 
         assertEquals(project.getName(), projectCreated.getName(), "Los projects deben tener el mismo nombre");
         assertEquals(project.getDescription(), projectCreated.getDescription(), "Los projects deben tener la misma descripcion");
-    }
-
-    @Test
-    void raiseCreatedEventShouldPublishedAsDomainEvent() {
-        project.raiseCreatedEvent();
-
-        assertEquals(1, project.getDomainEvents().size(), "El project debe contener solo 1 domain event");
+        assertEquals(1, projectCreated.getDomainEvents().size(), "El project debe contener solo 1 domain event");
     }
 }

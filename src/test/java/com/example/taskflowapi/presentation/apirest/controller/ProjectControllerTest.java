@@ -39,11 +39,11 @@ public class ProjectControllerTest {
     @Test
     void createProjectShouldReturnOkAndApiResponse() {
         var project = Project.builder()
-                .id(1L)
+                .code("PRJ-1234")
                 .name("Proyecto")
                 .description("Ejemplo")
                 .build();
-        var request = new CreateProjectRequest(project.getName(), project.getDescription());
+        var request = new CreateProjectRequest(project.getCode(), project.getName(), project.getDescription());
 
         when(mediator.send(any(CreateProjectCommand.class))).thenReturn(project);
 
@@ -60,7 +60,7 @@ public class ProjectControllerTest {
         var size = 10;
         var totalElements = 1;
         var project = Project.builder()
-                .id(1L)
+                .code("PRJ-1234")
                 .name("Proyecto")
                 .description("Ejemplo")
                 .build();
@@ -81,7 +81,7 @@ public class ProjectControllerTest {
         assertEquals(1, bodyResult.getData().size(), "El cuerpo de la respuesta debe tener 1 elemento");
 
         var firstItem = (GetProjectsResponse) bodyResult.getData().get(0);
-        assertEquals(project.getId(), firstItem.id());
+        assertEquals(project.getCode(), firstItem.code());
         assertEquals(project.getName(), firstItem.name());
 
         verify(mediator).send(query);

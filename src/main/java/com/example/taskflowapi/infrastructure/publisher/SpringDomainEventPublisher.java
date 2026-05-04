@@ -14,12 +14,12 @@ public class SpringDomainEventPublisher implements DomainEventPublisher {
     private final ApplicationEventPublisher publisher;
 
     @Override
-    public void publish(Model<?> model) {
+    public void publish(Model model) {
         model.getDomainEvents().forEach(publisher::publishEvent);
     }
 
     @Override
-    public void publish(Model<?>... model) {
+    public void publish(Model ...model) {
         Arrays.stream(model).forEach(this::publish);
     }
 }

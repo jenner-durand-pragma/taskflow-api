@@ -7,6 +7,7 @@ import java.util.List;
 public interface ProjectRepository {
     Project create(Project project);
     Project update(Project project);
+    Boolean existsByCode(String code);
     List<Project> searchPaginated(String search, Integer page, Integer size);
     Long count(String search);
 }

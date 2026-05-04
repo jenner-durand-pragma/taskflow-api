@@ -12,8 +12,10 @@ public interface ProjectEntityRepository extends
         JpaRepository<ProjectEntity, Long>,
         PagingAndSortingRepository<ProjectEntity, Long>,
         ListQueryByExampleExecutor<ProjectEntity> {
-    List<ProjectEntity> findByNameOrDescriptionContainingIgnoreCase(String name, String description, Pageable pageable);
+    List<ProjectEntity> findByCodeOrNameOrDescriptionContainingIgnoreCase(String code, String name, String description, Pageable pageable);
     List<ProjectEntity> findAllBy(Pageable pageable);
 
-    Long countByNameOrDescriptionContainingIgnoreCase(String name, String description);
+    Long countByCodeOrNameOrDescriptionContainingIgnoreCase(String code, String name, String description);
+
+    Boolean existsByCodeIgnoreCase(String code);
 }

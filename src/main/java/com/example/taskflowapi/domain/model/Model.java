@@ -7,10 +7,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Getter
-public abstract class Model<T> {
-    private final List<DomainEvent<T>> domainEvents = new ArrayList<>();
+public abstract class Model {
+    private final List<DomainEvent> domainEvents = new ArrayList<>();
 
-    protected void raise(DomainEvent<T> domainEvent) {
+    protected void raise(DomainEvent domainEvent) {
         domainEvents.add(domainEvent);
     }
 }

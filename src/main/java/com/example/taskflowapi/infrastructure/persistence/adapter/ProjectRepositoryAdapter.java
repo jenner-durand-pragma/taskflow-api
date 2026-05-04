@@ -38,12 +38,17 @@ public class ProjectRepositoryAdapter implements ProjectRepository {
     }
 
     @Override
+    public Boolean existsByCode(String code) {
+        return repository.existsByCodeIgnoreCase(code);
+    }
+
+    @Override
     public List<Project> searchPaginated(String search, Integer page, Integer size) {
         var pageable = PageRequest.of(page, size);
 
         var list = Objects.isNull(search) || search.isBlank()
         ? repository.findAllBy(pageable)
-        : repository.findByNameOrDescriptionContainingIgnoreCase(search, search, pageable);
+        : repository.findByCodeOrNameOrDescriptionContainingIgnoreCase(search, search, search, pageable);
 
         return list.stream()
                 .map(mapper::toModel)
@@ -54,6 +59,6 @@ public class ProjectRepositoryAdapter implements ProjectRepository {
     public Long count(String search) {
         return Objects.isNull(search) || search.isBlank()
                 ? repository.count()
-                : repository.countByNameOrDescriptionContainingIgnoreCase(search, search);
+                : repository.countByCodeOrNameOrDescriptionContainingIgnoreCase(search, search, search);
     }
 }

@@ -33,7 +33,7 @@ public class CreateProjectCommandHandlerTest {
     @BeforeEach
     void setUp() {
         project = Project.builder()
-                .id(1L)
+                .code("PRJ-1234")
                 .name("Proyecto")
                 .description("Ejemplo")
                 .build();
@@ -41,13 +41,13 @@ public class CreateProjectCommandHandlerTest {
 
     @Test
     void handleShouldCallRepositoryAndReturnSavedProject() {
-        var command = new CreateProjectCommand(project.getName(), project.getDescription());
+        var command = new CreateProjectCommand(project.getCode(), project.getName(), project.getDescription());
         when(repository.create(any(Project.class))).thenReturn(project);
 
         var result = handler.handle(command);
 
         assertNotNull(result);
-        assertEquals(project.getId(), result.getId(), "El ID del proyecto esperado por guardarse no coincide con el persistido");
+        assertEquals(project.getCode(), result.getCode(), "El codigo del proyecto esperado por guardarse no coincide con el persistido");
 
         verify(repository, times(1)).create(any(Project.class));
         verify(publisher, times(1)).publish(project);

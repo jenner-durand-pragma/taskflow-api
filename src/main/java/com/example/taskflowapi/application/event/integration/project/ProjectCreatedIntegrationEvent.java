@@ -1,7 +1,7 @@
 package com.example.taskflowapi.application.event.integration.project;
 
 public record ProjectCreatedIntegrationEvent(
-        Long id,
+        String code,
         String name,
         String description
 ) implements ProjectEvent {

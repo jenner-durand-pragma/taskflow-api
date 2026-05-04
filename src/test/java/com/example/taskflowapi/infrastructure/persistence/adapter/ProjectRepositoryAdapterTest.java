@@ -41,13 +41,13 @@ public class ProjectRepositoryAdapterTest {
         adapter = new ProjectRepositoryAdapter(repository, mapper);
 
         model = Project.builder()
-                .id(1L)
+                .code("PRJ-1234")
                 .name("Proyecto de prueba")
                 .description("Descripcion de Prueba")
                 .build();
 
         entity = ProjectEntity.builder()
-                .id(1L)
+                .code("PRJ-4567")
                 .name("Proyecto de prueba")
                 .description("Descripcion de Prueba")
                 .build();
@@ -97,9 +97,9 @@ public class ProjectRepositoryAdapterTest {
         var result = adapter.searchPaginated(search, page, size);
 
         assertEquals(1, result.size());
-        assertEquals(entity.getId(), result.get(0).getId());
+        assertEquals(entity.getCode(), result.get(0).getCode());
         verify(repository).findAllBy(pageable);
-        verify(repository, never()).findByNameOrDescriptionContainingIgnoreCase(search, search, pageable);
+        verify(repository, never()).findByCodeOrNameOrDescriptionContainingIgnoreCase(search, search, search, pageable);
     }
 
     @Test
@@ -110,13 +110,13 @@ public class ProjectRepositoryAdapterTest {
         var pageable = PageRequest.of(page, size);
         var entities = List.of(entity);
 
-        when(repository.findByNameOrDescriptionContainingIgnoreCase(search, search, pageable)).thenReturn(entities);
+        when(repository.findByCodeOrNameOrDescriptionContainingIgnoreCase(search, search, search, pageable)).thenReturn(entities);
 
         var result = adapter.searchPaginated(search, page, size);
 
         assertEquals(1, result.size());
-        assertEquals(entity.getId(), result.get(0).getId());
-        verify(repository).findByNameOrDescriptionContainingIgnoreCase(search, search, pageable);
+        assertEquals(entity.getCode(), result.get(0).getCode());
+        verify(repository).findByCodeOrNameOrDescriptionContainingIgnoreCase(search, search, search, pageable);
         verify(repository, never()).findAllBy(pageable);
     }
 
@@ -128,18 +128,18 @@ public class ProjectRepositoryAdapterTest {
 
         assertEquals(5L, result);
         verify(repository).count();
-        verify(repository, never()).countByNameOrDescriptionContainingIgnoreCase(any(), any());
+        verify(repository, never()).countByCodeOrNameOrDescriptionContainingIgnoreCase(any(), any(), any());
     }
 
     @Test
     void countWithValidSearchTermShouldCallCountByNameOrDescription() {
         var search = "Proyecto de prueba";
-        when(repository.countByNameOrDescriptionContainingIgnoreCase(search, search)).thenReturn(1L);
+        when(repository.countByCodeOrNameOrDescriptionContainingIgnoreCase(search, search, search)).thenReturn(1L);
 
         var result = adapter.count(search);
 
         assertEquals(1L, result);
-        verify(repository).countByNameOrDescriptionContainingIgnoreCase(search, search);
+        verify(repository).countByCodeOrNameOrDescriptionContainingIgnoreCase(search, search, search);
         verify(repository, never()).count();
     }
 }

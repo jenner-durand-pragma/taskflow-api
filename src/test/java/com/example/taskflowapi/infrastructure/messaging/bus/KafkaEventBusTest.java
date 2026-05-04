@@ -1,5 +1,6 @@
 package com.example.taskflowapi.infrastructure.messaging.bus;
 
+import com.example.taskflowapi.application.event.integration.common.IntegrationEvent;
 import com.example.taskflowapi.infrastructure.messaging.contract.TopicRouter;
 import com.example.taskflowapi.infrastructure.messaging.dto.EventMessage;
 import org.junit.jupiter.api.BeforeEach;
@@ -49,11 +50,13 @@ class KafkaEventBusTest {
         var type = "DummyType";
         var targetTopic = "dummy-topic";
 
+        var integrationEvent = IntegrationEvent.of(event, type, key);
+
         when(router1.supports(event)).thenReturn(false);
         when(router2.supports(event)).thenReturn(true);
         when(router2.topic()).thenReturn(targetTopic);
 
-        kafkaEventBus.send(event, key, type);
+        kafkaEventBus.send(integrationEvent);
 
         verify(kafkaTemplate, times(1)).send(eq(targetTopic), eq(key), messageCaptor.capture());
 
@@ -69,10 +72,12 @@ class KafkaEventBusTest {
         var key = "123";
         var type = "DummyType";
 
+        var integrationEvent = IntegrationEvent.of(event, type, key);
+
         when(router1.supports(event)).thenReturn(false);
         when(router2.supports(event)).thenReturn(false);
 
-        kafkaEventBus.send(event, key, type);
+        kafkaEventBus.send(integrationEvent);
 
         verifyNoInteractions(kafkaTemplate);
     }
@@ -83,10 +88,12 @@ class KafkaEventBusTest {
         var key = "123";
         var targetTopic = "dummy-topic";
 
+        var integrationEvent = IntegrationEvent.of(event, null, key);
+
         when(router1.supports(event)).thenReturn(true);
         when(router1.topic()).thenReturn(targetTopic);
 
-        kafkaEventBus.send(event, key);
+        kafkaEventBus.send(integrationEvent);
 
         verify(kafkaTemplate, times(1)).send(eq(targetTopic), eq(key), messageCaptor.capture());
 

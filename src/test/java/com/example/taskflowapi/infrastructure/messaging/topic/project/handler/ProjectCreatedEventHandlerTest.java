@@ -1,19 +1,24 @@
 package com.example.taskflowapi.infrastructure.messaging.topic.project.handler;
 
 import com.example.taskflowapi.application.event.integration.project.ProjectCreatedIntegrationEvent;
+import com.example.taskflowapi.application.mediator.Mediator;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+@ExtendWith(MockitoExtension.class)
 class ProjectCreatedEventHandlerTest {
 
-    private ProjectCreatedEventHandler handler;
+    @Mock
+    private Mediator mediator;
 
-    @BeforeEach
-    void setUp() {
-        handler = new ProjectCreatedEventHandler();
-    }
+    @InjectMocks
+    private ProjectCreatedEventHandler handler;
 
     @Test
     void supportsShouldReturnTrueWhenEventTypeMatches() {
@@ -39,8 +44,7 @@ class ProjectCreatedEventHandlerTest {
 
     @Test
     void handleShouldExecuteSuccessfullyWhenProvidedWithCorrectEventType() {
-        var validEvent = new ProjectCreatedIntegrationEvent(1L, "Test Name", "Test Desc");
-
+        var validEvent = new ProjectCreatedIntegrationEvent("EXAMPLE_CODE", "Test Name", "Test Desc");
         assertDoesNotThrow(() -> handler.handle(validEvent),
                 "El método handle no debería lanzar ninguna excepción al recibir el evento correcto");
     }

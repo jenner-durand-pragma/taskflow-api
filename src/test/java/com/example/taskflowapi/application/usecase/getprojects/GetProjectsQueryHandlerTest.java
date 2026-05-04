@@ -32,7 +32,7 @@ public class GetProjectsQueryHandlerTest {
     @BeforeEach
     void setUp() {
         project = Project.builder()
-                .id(1L)
+                .code("PRJ-1234")
                 .name("Proyecto")
                 .description("Ejemplo")
                 .build();
@@ -52,6 +52,6 @@ public class GetProjectsQueryHandlerTest {
 
         assertNotNull(result);
         assertEquals(1, result.totalElements(), "El total de elementos debe ser 1");
-        assertEquals(project.getId(), result.data().get(0).getId(), "El ID del primer elemento de la lista debe coincidir con el que se ha considerado");
+        assertEquals(project.getCode(), result.data().get(0).getCode(), "El codigo del primer elemento de la lista debe coincidir con el que se ha considerado");
     }
 }

@@ -23,19 +23,19 @@ class SpringDomainEventPublisherTest {
     private SpringDomainEventPublisher springDomainEventPublisher;
 
     @Mock
-    private Model<?> model1;
+    private Model model1;
 
     @Mock
-    private Model<?> model2;
+    private Model model2;
 
     @Mock
-    private DomainEvent<?> event1;
+    private DomainEvent event1;
 
     @Mock
-    private DomainEvent<?> event2;
+    private DomainEvent event2;
 
     @Mock
-    private DomainEvent<?> event3;
+    private DomainEvent event3;
 
     @Test
     void publishSingleModelShouldPublishAllItsEvents() {

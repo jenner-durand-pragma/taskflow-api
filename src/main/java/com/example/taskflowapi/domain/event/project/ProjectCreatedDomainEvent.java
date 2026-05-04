@@ -3,7 +3,7 @@ package com.example.taskflowapi.domain.event.project;
 import com.example.taskflowapi.domain.event.DomainEvent;
 
 public record ProjectCreatedDomainEvent(
-        Long id,
+        String code,
         String name,
-        String description) implements DomainEvent<Long> {
+        String description) implements DomainEvent {
 }
