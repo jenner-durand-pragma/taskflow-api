@@ -1,5 +1,6 @@
 package com.example.taskflowapi.domain.model;
 
+import com.example.taskflowapi.domain.enums.ProjectStatus;
 import com.example.taskflowapi.domain.event.project.ProjectCreatedDomainEvent;
 import lombok.*;
 
@@ -13,6 +14,7 @@ import java.util.Objects;
 public class Project extends Model {
     private String code;
     private String name;
+    private ProjectStatus status;
     private String description;
 
     public static Project create(String code, String name, String description) {
@@ -24,6 +26,7 @@ public class Project extends Model {
                 .code(code)
                 .name(name)
                 .description(description)
+                .status(ProjectStatus.DRAFT)
                 .build();
 
         project.raiseCreatedEvent();
