@@ -34,6 +34,9 @@ public class Project extends Model {
         return project;
     }
 
+    public void update(String name, String description, ProjectStatus status) {
+    }
+
     public static Project create(String name, String description) {
         return create(null, name, description);
     }
