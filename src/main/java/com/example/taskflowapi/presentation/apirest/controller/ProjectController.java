@@ -21,6 +21,9 @@ public class ProjectController {
     private final Mediator mediator;
     private final ProjectRequestMapper mapper;
 
+    /*
+    * Only for test purposes, because it must be created in Appian
+    * */
     @PostMapping
     public ResponseEntity<ApiResponse<CreateProjectResponse>> createProject(
             @Valid
