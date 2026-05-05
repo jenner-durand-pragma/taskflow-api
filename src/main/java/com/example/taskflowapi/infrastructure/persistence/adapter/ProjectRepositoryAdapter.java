@@ -40,7 +40,8 @@ public class ProjectRepositoryAdapter implements ProjectRepository {
 
     @Override
     public Optional<Project> findByCode(String code) {
-        return Optional.empty();
+        return repository.findByCodeIgnoreCase(code)
+                .map(mapper::toModel);
     }
 
     @Override
