@@ -48,7 +48,7 @@ class ProjectUpdatedEventHandlerTest {
 
     @Test
     void handleShouldExecuteSuccessfullyWhenProvidedWithCorrectEventType() {
-        var validEvent = new ProjectUpdatedIntegrationEvent("EXAMPLE_CODE", "Test Name", "Test Desc", "Example status");
+        var validEvent = new ProjectUpdatedIntegrationEvent("EXAMPLE_CODE", "Test Name", "Test Desc", "ACTIVE");
         assertDoesNotThrow(() -> handler.handle(validEvent),
                 "El método handle no debería lanzar ninguna excepción al recibir el evento correcto");
     }
