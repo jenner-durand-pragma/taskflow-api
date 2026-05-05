@@ -15,6 +15,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.domain.PageRequest;
 
 import java.util.List;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
@@ -47,7 +48,7 @@ public class ProjectRepositoryAdapterTest {
                 .build();
 
         entity = ProjectEntity.builder()
-                .code("PRJ-4567")
+                .code("PRJ-1234")
                 .name("Proyecto de prueba")
                 .description("Descripcion de Prueba")
                 .build();
@@ -141,5 +142,28 @@ public class ProjectRepositoryAdapterTest {
         assertEquals(1L, result);
         verify(repository).countByCodeOrNameOrDescriptionContainingIgnoreCase(search, search, search);
         verify(repository, never()).count();
+    }
+
+    @Test
+    void findByCodeShouldReturnSuccessfully() {
+        var code = "PRJ-1234";
+        when(repository.findByCodeIgnoreCase(code)).thenReturn(Optional.of(entity));
+
+        var result = adapter.findByCode(code);
+        var model = result.orElse(null);
+
+        assertNotNull(model, "El proyecto debe existir");
+        assertEquals(code, model.getCode(), "El codigo debe ser el mismo");
+    }
+
+    @Test
+    void findByCodeShouldReturnEmptyIfNotExists() {
+        var code = "PRJ-0000";
+        when(repository.findByCodeIgnoreCase(code)).thenReturn(Optional.empty());
+
+        var result = adapter.findByCode(code);
+        var model = result.orElse(null);
+
+        assertNull(model, "El proyecto no debe existir");
     }
 }
