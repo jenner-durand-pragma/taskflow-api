@@ -14,6 +14,11 @@ public class UpdateProjectCommandHandler implements CommandHandler<UpdateProject
 
     @Override
     public Project handle(UpdateProjectCommand command) {
-        return null;
+        var project = projectRepository.findByCode(command.code())
+                .orElseThrow(() -> new ProjectNotFoundException(command.code()));
+
+        project.update(command.name(), command.description(), command.status());
+
+        return projectRepository.update(project);
     }
 }
