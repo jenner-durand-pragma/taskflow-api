@@ -1,5 +1,6 @@
 package com.example.taskflowapi.infrastructure.persistence.entity;
 
+import com.example.taskflowapi.domain.enums.ProjectStatus;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -25,9 +26,23 @@ public class ProjectEntity {
     @Column
     private String description;
     @Column
+    @Enumerated(EnumType.STRING)
+    private ProjectStatus status;
+    @Column
     private LocalDateTime createdAt;
     @Column
     private LocalDateTime updatedAt;
     @Column
     private LocalDateTime deletedAt;
+
+    @PrePersist
+    protected void onCreate() {
+        this.createdAt = LocalDateTime.now();
+        this.updatedAt = LocalDateTime.now();
+    }
+
+    @PreUpdate
+    protected void onUpdate() {
+        this.updatedAt = LocalDateTime.now();
+    }
 }

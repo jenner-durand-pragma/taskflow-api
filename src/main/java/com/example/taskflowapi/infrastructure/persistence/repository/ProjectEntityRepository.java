@@ -7,6 +7,7 @@ import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.data.repository.query.ListQueryByExampleExecutor;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface ProjectEntityRepository extends
         JpaRepository<ProjectEntity, Long>,
@@ -18,4 +19,5 @@ public interface ProjectEntityRepository extends
     Long countByCodeOrNameOrDescriptionContainingIgnoreCase(String code, String name, String description);
 
     Boolean existsByCodeIgnoreCase(String code);
+    Optional<ProjectEntity> findByCodeIgnoreCase(String code);
 }

@@ -11,6 +11,7 @@ import org.springframework.stereotype.Component;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 @Component
 @AllArgsConstructor
@@ -22,9 +23,6 @@ public class ProjectRepositoryAdapter implements ProjectRepository {
     public Project create(Project project) {
         var entity = mapper.toEntity(project);
 
-        entity.setCreatedAt(LocalDateTime.now());
-        entity.setUpdatedAt(LocalDateTime.now());
-
         return mapper.toModel(repository.save(entity));
     }
 
@@ -32,14 +30,17 @@ public class ProjectRepositoryAdapter implements ProjectRepository {
     public Project update(Project project) {
         var entity = mapper.toEntity(project);
 
-        entity.setUpdatedAt(LocalDateTime.now());
-
         return mapper.toModel(repository.save(entity));
     }
 
     @Override
     public Boolean existsByCode(String code) {
         return repository.existsByCodeIgnoreCase(code);
+    }
+
+    @Override
+    public Optional<Project> findByCode(String code) {
+        return Optional.empty();
     }
 
     @Override
