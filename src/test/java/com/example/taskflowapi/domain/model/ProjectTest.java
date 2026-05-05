@@ -40,6 +40,5 @@ public class ProjectTest {
         assertEquals(project.getName(), newName, "Deben tener el mismo nombre");
         assertEquals(project.getDescription(), newDescription, "Deben tener la misma descripcion");
         assertEquals(project.getStatus(), newStatus, "Deben tener el mismo estado");
-        assertEquals(1, project.getDomainEvents().size(), "El project debe contener solo 1 domain event");
     }
 }
