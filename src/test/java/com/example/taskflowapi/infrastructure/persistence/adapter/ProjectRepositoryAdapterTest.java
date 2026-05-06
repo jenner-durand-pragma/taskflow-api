@@ -14,6 +14,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.domain.PageRequest;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -56,7 +57,13 @@ public class ProjectRepositoryAdapterTest {
 
     @Test
     void createShouldSetDatesAndSaveEntity() {
-        when(repository.save(any(ProjectEntity.class))).thenReturn(entity);
+        when(repository.save(any(ProjectEntity.class))).thenAnswer(invocation -> {
+            var entityPushedToRepo = (ProjectEntity) invocation.getArgument(0);
+            entityPushedToRepo.setCreatedAt(LocalDateTime.now());
+            entityPushedToRepo.setUpdatedAt(LocalDateTime.now());
+
+            return entityPushedToRepo;
+        });
 
         var result = adapter.create(model);
 
@@ -72,7 +79,12 @@ public class ProjectRepositoryAdapterTest {
 
     @Test
     void updateShouldSetUpdatedAtAndSaveEntity() {
-        when(repository.save(any(ProjectEntity.class))).thenReturn(entity);
+        when(repository.save(any(ProjectEntity.class))).thenAnswer(invocation -> {
+            var entityPushedToRepo = (ProjectEntity) invocation.getArgument(0);
+            entityPushedToRepo.setUpdatedAt(LocalDateTime.now());
+
+            return entityPushedToRepo;
+        });
 
         var result = adapter.update(model);
 
