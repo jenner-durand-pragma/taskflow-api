@@ -18,17 +18,23 @@ public class CreateProjectCommandHandler implements CommandHandler<CreateProject
     @Override
     public Project handle(CreateProjectCommand command) {
         var project = command.toProject();
+
+        assignUniqueCode(project);
+
+        var savedProject = repository.create(project);
+        publisher.publish(savedProject);
+
+        return savedProject;
+    }
+
+    private void assignUniqueCode(Project project) {
         var finalCode = Stream.iterate(0, i -> i + 1)
                 .limit(10)
                 .map(project::getCodeWithSuffix)
                 .filter(code -> !repository.existsByCode(code))
                 .findFirst()
-                .orElseThrow(() -> new IllegalStateException("Se superó el límite máximo de 10 intentos para generar un código único."));
+                .orElseThrow(() -> new IllegalStateException("Límite de intentos superado."));
+
         project.setCode(finalCode);
-        project = repository.create(command.toProject());
-
-        publisher.publish(project);
-
-        return project;
     }
 }

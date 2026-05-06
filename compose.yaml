@@ -9,7 +9,7 @@ services:
       - '${POSTGRES_HOST_PORT}:5432'
 
   kafka:
-    image: 'apache/kafka:${KAFKA_VERSION}' # <-- Esta es la clave
+    image: 'apache/kafka:${KAFKA_VERSION}'
     ports:
       - '${KAFKA_EXTERNAL_PORT}:9092'
     volumes:
