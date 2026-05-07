@@ -52,4 +52,49 @@ public class CreateProjectCommandHandlerTest {
         verify(repository, times(1)).create(any(Project.class));
         verify(publisher, times(1)).publish(project);
     }
+
+    @Test
+    void handleShouldThrowIllegalArgumentExceptionWhenCodeAlreadyExists() {
+        var command = new CreateProjectCommand(project.getCode(), project.getName(), project.getDescription());
+
+        when(repository.existsByCode(project.getCode())).thenReturn(true);
+
+        assertThrows(IllegalArgumentException.class, () -> handler.handle(command));
+
+        verify(repository, never()).create(any(Project.class));
+    }
+
+    @Test
+    void handleShouldGenerateCodeWhenCommandCodeIsNull() {
+        var commandWithoutCode = new CreateProjectCommand(null, "Name", "Desc");
+
+        when(repository.existsByCode(anyString())).thenReturn(false);
+        when(repository.create(any(Project.class))).thenAnswer(invocation -> invocation.getArgument(0));
+
+        var result = handler.handle(commandWithoutCode);
+
+        assertNotNull(result.getCode(), "El handler debió haber asignado un código generado");
+        assertFalse(result.getCode().isBlank());
+
+        verify(repository, times(1)).existsByCode(anyString());
+        verify(repository, times(1)).create(any(Project.class));
+    }
+
+    @Test
+    void handleShouldGenerateCodeAfterSeveralAttempts() {
+        var commandWithoutCode = new CreateProjectCommand("", "Name", "Desc");
+
+        when(repository.existsByCode(anyString()))
+                .thenReturn(true)
+                .thenReturn(true)
+                .thenReturn(false);
+
+        when(repository.create(any(Project.class))).thenAnswer(invocation -> invocation.getArgument(0));
+
+        var result = handler.handle(commandWithoutCode);
+
+        assertNotNull(result.getCode());
+        verify(repository, times(3)).existsByCode(anyString());
+        verify(repository, times(1)).create(any(Project.class));
+    }
 }

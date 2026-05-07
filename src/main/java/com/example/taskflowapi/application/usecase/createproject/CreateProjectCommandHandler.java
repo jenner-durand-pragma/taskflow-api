@@ -19,12 +19,25 @@ public class CreateProjectCommandHandler implements CommandHandler<CreateProject
     public Project handle(CreateProjectCommand command) {
         var project = command.toProject();
 
-        assignUniqueCode(project);
+        ensureValidCode(project, command.code());
 
         var savedProject = repository.create(project);
         publisher.publish(savedProject);
 
         return savedProject;
+    }
+
+    private void ensureValidCode(Project project, String originalCode) {
+        if (originalCode == null || originalCode.isBlank()) {
+            assignUniqueCode(project);
+            return;
+        }
+
+        if (repository.existsByCode(project.getCode())) {
+            throw new IllegalArgumentException(
+                    String.format("El proyecto con código '%s' ya existe en el sistema.", project.getCode())
+            );
+        }
     }
 
     private void assignUniqueCode(Project project) {

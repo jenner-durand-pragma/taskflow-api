@@ -9,6 +9,6 @@ public record CreateProjectCommand(
         String description
 ) implements Command<Project> {
     public Project toProject() {
-        return Project.create(name, description);
+        return Project.create(code, name, description);
     }
 }
