@@ -29,8 +29,9 @@ public class ProjectRepositoryAdapter implements ProjectRepository {
     @Override
     public Project update(Project project) {
         var entity = mapper.toEntity(project);
+        repository.updateByCode(entity);
 
-        return mapper.toModel(repository.save(entity));
+        return project;
     }
 
     @Override

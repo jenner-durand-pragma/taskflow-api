@@ -79,22 +79,18 @@ public class ProjectRepositoryAdapterTest {
 
     @Test
     void updateShouldSetUpdatedAtAndSaveEntity() {
-        when(repository.save(any(ProjectEntity.class))).thenAnswer(invocation -> {
-            var entityPushedToRepo = (ProjectEntity) invocation.getArgument(0);
-            entityPushedToRepo.setUpdatedAt(LocalDateTime.now());
-
-            return entityPushedToRepo;
-        });
-
         var result = adapter.update(model);
 
         assertNotNull(result);
-        verify(repository).save(entityCaptor.capture());
+        assertEquals(model, result);
+        verify(repository).updateByCode(entityCaptor.capture());
 
         var resultCaptor = entityCaptor.getValue();
 
-        assertNotNull(resultCaptor.getUpdatedAt());
+        assertEquals(model.getCode(), resultCaptor.getCode());
         assertEquals(model.getName(), resultCaptor.getName());
+        assertEquals(model.getDescription(), resultCaptor.getDescription());
+        assertEquals(model.getStatus(), resultCaptor.getStatus());
     }
 
     @Test

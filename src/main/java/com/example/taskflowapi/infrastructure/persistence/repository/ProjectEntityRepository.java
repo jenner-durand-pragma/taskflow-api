@@ -1,10 +1,14 @@
 package com.example.taskflowapi.infrastructure.persistence.repository;
 
+import com.example.taskflowapi.domain.enums.ProjectStatus;
 import com.example.taskflowapi.infrastructure.persistence.entity.ProjectEntity;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.data.repository.query.ListQueryByExampleExecutor;
+import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 import java.util.Optional;
@@ -20,4 +24,15 @@ public interface ProjectEntityRepository extends
 
     Boolean existsByCodeIgnoreCase(String code);
     Optional<ProjectEntity> findByCodeIgnoreCase(String code);
+
+    @Modifying(clearAutomatically = true)
+    @Query("""
+        UPDATE ProjectEntity p 
+        SET p.name = :#{#entity.name}, 
+            p.description = :#{#entity.description}, 
+            p.status = :#{#entity.status}, 
+            p.updatedAt = CURRENT_TIMESTAMP 
+        WHERE p.code = :#{#entity.code}
+    """)
+    void updateByCode(@Param("entity") ProjectEntity entity);
 }
