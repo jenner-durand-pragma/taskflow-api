@@ -11,30 +11,23 @@ import java.util.Optional;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Task {
-    private Long id;
+    private String code;
     private String title;
     private Long projectId;
     private Long userId;
-    private List<TaskTag> tags;
+    private List<Tag> tags;
 
     public void addTag(Tag tag) {
         if (searchTag(tag).isPresent()) {
             return;
         }
 
-        tags.add(
-                TaskTag.builder()
-                        .tagId(tag.getId())
-                        .taskId(id)
-                        .tag(tag)
-                        .task(this)
-                        .build()
-        );
+        tags.add(tag);
     }
 
-    private Optional<TaskTag> searchTag(Tag tag) {
+    private Optional<Tag> searchTag(Tag tag) {
         return tags.stream().filter(
-                t -> tag.getId().equals(t.getTagId())
+                t -> tag.getCode().equals(t.getCode())
         ).findFirst();
     }
 }

@@ -14,7 +14,7 @@ public class TaskTest {
     @BeforeEach
     void setUp() {
         task = Task.builder()
-                .id(1L)
+                .code("TASK-001")
                 .title("Prueba Tarea")
                 .tags(new ArrayList<>())
                 .build();
@@ -23,7 +23,7 @@ public class TaskTest {
     @Test
     void addTagWhenTagIsNewShouldAddSuccessfully() {
         var tag = Tag.builder()
-                .id(2L)
+                .code("TAG-001")
                 .name("Prueba Tag")
                 .build();
 
@@ -33,40 +33,37 @@ public class TaskTest {
 
         var tagAdded = task.getTags().get(0);
 
-        assertEquals(2L, tagAdded.getTagId(), "El tagId debe coincidir con el ID del Tag");
-        assertEquals(1L, tagAdded.getTaskId(), "El taskId debe coincidir con el ID del Task");
-        assertEquals(tag, tagAdded.getTag(), "La referencia al objeto Tag debe ser correcta");
-        assertEquals(task, tagAdded.getTask(), "La referencia al objeto Task debe ser correcta");
+        assertEquals(tag.getCode(), tagAdded.getCode(), "El tagId debe coincidir con el ID del Tag");
     }
 
     @Test
     void addTagWhenTagAlreadyExistsShouldNotAddDuplicate() {
         var tag1 = new Tag();
-        tag1.setId(1L);
+        tag1.setCode("TAG-002");
 
         Tag duplicateTag = new Tag();
-        duplicateTag.setId(1L);
+        duplicateTag.setCode("TAG-002");
 
         task.addTag(tag1);
         task.addTag(duplicateTag);
 
         assertEquals(1, task.getTags().size(), "La lista de tags no debería permitir duplicados");
-        assertEquals(1L, task.getTags().get(0).getTagId());
+        assertEquals(duplicateTag.getCode(), task.getTags().get(0).getCode());
     }
 
     @Test
     void addTagWithMultipleDistinctTagsShouldAddAll() {
         var tag1 = new Tag();
-        tag1.setId(1L);
+        tag1.setCode("TAG-003");
 
         var tag2 = new Tag();
-        tag2.setId(2L);
+        tag2.setCode("TAG-004");
 
         task.addTag(tag1);
         task.addTag(tag2);
 
         assertEquals(2, task.getTags().size(), "Debería haber añadido ambos tags correctamente");
-        assertEquals(1L, task.getTags().get(0).getTagId());
-        assertEquals(2L, task.getTags().get(1).getTagId());
+        assertEquals(tag1.getCode(), task.getTags().get(0).getCode());
+        assertEquals(tag2.getCode(), task.getTags().get(1).getCode());
     }
 }
