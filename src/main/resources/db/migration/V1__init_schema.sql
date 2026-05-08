@@ -28,6 +28,7 @@ CREATE TABLE PROJECTS
 CREATE TABLE TASKS
 (
     ID              BIGSERIAL PRIMARY KEY,
+    CODE            VARCHAR(255) NOT NULL,
     TITLE           VARCHAR(255) NOT NULL,
     PROJECT_ID      INT          NOT NULL,
     USER_ID         INT          NULL,
