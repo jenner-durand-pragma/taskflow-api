@@ -1,5 +1,6 @@
 package com.example.taskflowapi.domain.model;
 
+import com.example.taskflowapi.domain.event.task.TaskCreatedDomainEvent;
 import lombok.*;
 
 import java.util.List;
@@ -19,7 +20,16 @@ public class Task extends Model {
     private Project project;
 
     public static Task create(String code, String title, String projectCode) {
-        return null;
+        var task = Task.builder()
+                .code(code)
+                .title(title)
+                .projectCode(projectCode)
+                .build();
+
+        var domainEvent = new TaskCreatedDomainEvent(task.getCode(), task.getTitle(), task.getProjectCode());
+        task.raise(domainEvent);
+
+        return task;
     }
 
     public void addTag(Tag tag) {
