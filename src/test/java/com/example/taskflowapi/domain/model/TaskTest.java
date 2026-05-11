@@ -4,6 +4,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -18,6 +19,27 @@ public class TaskTest {
                 .title("Prueba Tarea")
                 .tags(new ArrayList<>())
                 .build();
+    }
+
+    @Test
+    void createTaskShouldCreateSuccessfully() {
+        var tags = List.of(
+            Tag.builder().code("TAG-001").name("Example").build(),
+            Tag.builder().code("TAG-002").name("Example 2").build()
+        );
+        var task = Task.builder()
+                .code("TASK-001")
+                .title("Prueba Tarea")
+                .tags(tags)
+                .projectCode("PRJ-001")
+                .build();
+
+        var taskCreated = Task.create(task.getCode(), task.getTitle(), task.getProjectCode());
+
+        assertNotNull(taskCreated);
+        assertEquals(task.getCode(), taskCreated.getCode(), "Las tasks deben tener el mismo nombre");
+        assertEquals(task.getProject(), taskCreated.getProject(), "Las tasks deben tener el mismo codigo de proyecto");
+        assertEquals(1, taskCreated.getDomainEvents().size(), "El task debe contener solo 1 domain event");
     }
 
     @Test

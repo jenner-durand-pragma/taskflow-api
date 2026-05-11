@@ -10,12 +10,17 @@ import java.util.Optional;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Task {
+public class Task extends Model {
     private String code;
     private String title;
-    private Long projectId;
-    private Long userId;
     private List<Tag> tags;
+
+    private String projectCode;
+    private Project project;
+
+    public static Task create(String code, String title, String projectCode) {
+        return null;
+    }
 
     public void addTag(Tag tag) {
         if (searchTag(tag).isPresent()) {
