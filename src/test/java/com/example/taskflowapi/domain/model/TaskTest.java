@@ -17,75 +17,63 @@ public class TaskTest {
         task = Task.builder()
                 .code("TASK-001")
                 .title("Prueba Tarea")
-                .tags(new ArrayList<>())
+                .tagCodes(new ArrayList<>())
                 .build();
     }
 
     @Test
     void createTaskShouldCreateSuccessfully() {
-        var tags = List.of(
-            Tag.builder().code("TAG-001").name("Example").build(),
-            Tag.builder().code("TAG-002").name("Example 2").build()
-        );
-        var task = Task.builder()
+        var tagCodes = List.of("TAG-001", "TAG-002");
+
+        var expectedTask = Task.builder()
                 .code("TASK-001")
                 .title("Prueba Tarea")
-                .tags(tags)
+                .tagCodes(tagCodes)
                 .projectCode("PRJ-001")
                 .build();
 
-        var taskCreated = Task.create(task.getCode(), task.getTitle(), task.getProjectCode());
+        var taskCreated = Task.create(expectedTask.getCode(), expectedTask.getTitle(), expectedTask.getProjectCode());
 
         assertNotNull(taskCreated);
-        assertEquals(task.getCode(), taskCreated.getCode(), "Las tasks deben tener el mismo nombre");
-        assertEquals(task.getProject(), taskCreated.getProject(), "Las tasks deben tener el mismo codigo de proyecto");
+        assertEquals(expectedTask.getCode(), taskCreated.getCode(), "Las tasks deben tener el mismo codigo");
+        assertEquals(expectedTask.getProjectCode(), taskCreated.getProjectCode(), "Las tasks deben tener el mismo codigo de proyecto");
         assertEquals(1, taskCreated.getDomainEvents().size(), "El task debe contener solo 1 domain event");
     }
 
     @Test
     void addTagWhenTagIsNewShouldAddSuccessfully() {
-        var tag = Tag.builder()
-                .code("TAG-001")
-                .name("Prueba Tag")
-                .build();
+        var tagCode = "TAG-001";
 
-        task.addTag(tag);
+        task.addTag(tagCode);
 
-        assertEquals(1, task.getTags().size(), "La lista de tags deberia tener 1 tag");
+        assertEquals(1, task.getTagCodes().size(), "La lista de tags deberia tener 1 tag");
 
-        var tagAdded = task.getTags().get(0);
+        var tagAdded = task.getTagCodes().get(0);
 
-        assertEquals(tag.getCode(), tagAdded.getCode(), "El tagId debe coincidir con el ID del Tag");
+        assertEquals(tagCode, tagAdded, "El tagCode debe coincidir con el código insertado");
     }
 
     @Test
     void addTagWhenTagAlreadyExistsShouldNotAddDuplicate() {
-        var tag1 = new Tag();
-        tag1.setCode("TAG-002");
+        var tagCode = "TAG-002";
 
-        Tag duplicateTag = new Tag();
-        duplicateTag.setCode("TAG-002");
+        task.addTag(tagCode);
+        task.addTag(tagCode);
 
-        task.addTag(tag1);
-        task.addTag(duplicateTag);
-
-        assertEquals(1, task.getTags().size(), "La lista de tags no debería permitir duplicados");
-        assertEquals(duplicateTag.getCode(), task.getTags().get(0).getCode());
+        assertEquals(1, task.getTagCodes().size(), "La lista de tags no debería permitir duplicados");
+        assertEquals(tagCode, task.getTagCodes().get(0));
     }
 
     @Test
     void addTagWithMultipleDistinctTagsShouldAddAll() {
-        var tag1 = new Tag();
-        tag1.setCode("TAG-003");
+        var tagCode1 = "TAG-003";
+        var tagCode2 = "TAG-004";
 
-        var tag2 = new Tag();
-        tag2.setCode("TAG-004");
+        task.addTag(tagCode1);
+        task.addTag(tagCode2);
 
-        task.addTag(tag1);
-        task.addTag(tag2);
-
-        assertEquals(2, task.getTags().size(), "Debería haber añadido ambos tags correctamente");
-        assertEquals(tag1.getCode(), task.getTags().get(0).getCode());
-        assertEquals(tag2.getCode(), task.getTags().get(1).getCode());
+        assertEquals(2, task.getTagCodes().size(), "Debería haber añadido ambos tags correctamente");
+        assertEquals(tagCode1, task.getTagCodes().get(0));
+        assertEquals(tagCode2, task.getTagCodes().get(1));
     }
 }
