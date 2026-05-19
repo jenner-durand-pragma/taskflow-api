@@ -1,6 +1,8 @@
 package com.example.taskflowapi.infrastructure.persistence.adapter;
 
+import com.example.taskflowapi.application.exception.common.ReferencedResourceNotFoundException;
 import com.example.taskflowapi.domain.gateway.TaskRepository;
+import com.example.taskflowapi.domain.model.Project;
 import com.example.taskflowapi.domain.model.Task;
 import com.example.taskflowapi.infrastructure.persistence.mapper.TaskEntityMapper;
 import com.example.taskflowapi.infrastructure.persistence.repository.ProjectEntityRepository;
@@ -19,11 +21,19 @@ public class TaskRepositoryAdapter implements TaskRepository {
 
     @Override
     public Task create(Task task) {
-        return null;
+        var projectEntity = projectRepository.findByCodeIgnoreCase(task.getProjectCode())
+                .orElseThrow(() -> new ReferencedResourceNotFoundException(Project.class.getSimpleName(), "code", task.getProjectCode()));
+        var taskEntity = mapper.toEntity(task);
+
+        taskEntity.setProject(projectEntity);
+        taskEntity = repository.save(taskEntity);
+
+        return mapper.toModel(taskEntity);
     }
 
     @Override
     public Optional<Task> findByCode(String code) {
-        return Optional.empty();
+        return repository.findByCodeIgnoreCase(code)
+                .map(mapper::toModel);
     }
 }
