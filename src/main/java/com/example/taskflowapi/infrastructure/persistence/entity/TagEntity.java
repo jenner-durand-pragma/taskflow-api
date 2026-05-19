@@ -1,6 +1,5 @@
 package com.example.taskflowapi.infrastructure.persistence.entity;
 
-import com.example.taskflowapi.domain.enums.ProjectStatus;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.NaturalId;
@@ -15,9 +14,8 @@ import java.util.Set;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "PROJECTS")
-@EqualsAndHashCode(onlyExplicitlyIncluded = true)
-public class ProjectEntity {
+@Table(name = "TAGS")
+public class TagEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @EqualsAndHashCode.Include
@@ -28,18 +26,13 @@ public class ProjectEntity {
     @Column
     private String name;
     @Column
-    private String description;
-    @Column
-    @Enumerated(EnumType.STRING)
-    private ProjectStatus status;
-    @Column
     private LocalDateTime createdAt;
     @Column
     private LocalDateTime updatedAt;
     @Column
     private LocalDateTime deletedAt;
 
-    @OneToMany(mappedBy = "project", cascade = CascadeType.ALL, orphanRemoval = true)
+    @ManyToMany(mappedBy = "tags", fetch = FetchType.LAZY)
     private Set<TaskEntity> tasks = new HashSet<>();
 
     @PrePersist

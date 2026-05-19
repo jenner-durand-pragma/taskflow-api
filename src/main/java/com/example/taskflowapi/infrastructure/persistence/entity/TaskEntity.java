@@ -1,6 +1,6 @@
 package com.example.taskflowapi.infrastructure.persistence.entity;
 
-import com.example.taskflowapi.domain.enums.ProjectStatus;
+import com.example.taskflowapi.domain.enums.TaskStatus;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.NaturalId;
@@ -15,9 +15,8 @@ import java.util.Set;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "PROJECTS")
-@EqualsAndHashCode(onlyExplicitlyIncluded = true)
-public class ProjectEntity {
+@Table(name = "TASKS")
+public class TaskEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @EqualsAndHashCode.Include
@@ -26,12 +25,12 @@ public class ProjectEntity {
     @Column(unique = true)
     private String code;
     @Column
-    private String name;
+    private String title;
     @Column
-    private String description;
+    private Long userId;
     @Column
     @Enumerated(EnumType.STRING)
-    private ProjectStatus status;
+    private TaskStatus status;
     @Column
     private LocalDateTime createdAt;
     @Column
@@ -39,8 +38,17 @@ public class ProjectEntity {
     @Column
     private LocalDateTime deletedAt;
 
-    @OneToMany(mappedBy = "project", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<TaskEntity> tasks = new HashSet<>();
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "PROJECT_ID", nullable = false)
+    private ProjectEntity project;
+
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(
+            name = "TASK_TAGS",
+            joinColumns = @JoinColumn(name = "TASK_ID"),
+            inverseJoinColumns = @JoinColumn(name = "TAG_ID")
+    )
+    private Set<TagEntity> tags = new HashSet<>();
 
     @PrePersist
     protected void onCreate() {
